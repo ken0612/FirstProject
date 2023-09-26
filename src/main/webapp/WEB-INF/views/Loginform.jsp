@@ -16,7 +16,7 @@
 	}
 	</style>
 </head>
-<body class="bg-dark">
+<body class="bg-gray">
 <jsp:include page="home.jsp"></jsp:include>
 <div class="container mt-5">
     <div class="row justify-content-center">

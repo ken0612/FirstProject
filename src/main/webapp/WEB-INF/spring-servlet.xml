@@ -11,7 +11,7 @@
     	http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 	<!-- Provide support for component scanning -->
-	<context:component-scan base-package="com.ken" />
+	<context:component-scan base-package="com.ken,com.dao" />
 	<!--Provide support for conversion, formatting and validation -->
 	<mvc:annotation-driven />
 	<!-- Define Spring MVC view resolver -->
@@ -42,6 +42,19 @@
 	
 	<bean id="logindao" class="com.dao.LoginDao">
 		<property name="jdbcTemplate" ref="jt"></property>
+	</bean>
+	
+	<bean id="memberbeandao" class="com.dao.MemberBeanDao">
+		<property name="jdbcTemplate" ref="jt"></property>
+	</bean>
+	
+	<bean id="productmanagedao" class="com.dao.ProductManageDao">
+		<property name="jdbcTemplate" ref="jt"></property>
+	</bean>
+	
+	<bean id="cartdao" class="com.dao.CartDao">
+		<property name="jdbcTemplate" ref="jt"></property>
+		<property name="productManageDao" ref="productmanagedao"></property>
 	</bean>
 	
 </beans>

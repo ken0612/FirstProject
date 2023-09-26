@@ -6,17 +6,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>購物車</title>
     <!-- 引入Bootstrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="bg-light">
-<jsp:include page="home.jsp"></jsp:include>
-<h1>Login success!!!</h1>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
-<!-- 引入Bootstrap JS（放在body底部以加速頁面載入） -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<jsp:include page="home.jsp"></jsp:include>
+  	<h1>登入成功</h1>
+  	<a href="memberpage">前往個人中心</a>
+	<a href="backtotop">前往商品頁</a>
+    <!-- 引入Bootstrap JavaScript（包括jQuery） -->
+    
 </body>
 </html>
+

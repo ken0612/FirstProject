@@ -57,7 +57,7 @@
 					class="form-control" id="phone" name="phone" required>
 			</div>
 			<button type="submit" class="btn btn-primary">註冊</button>
-		</form:form>>
+		</form:form>
 	</div>
 
 
