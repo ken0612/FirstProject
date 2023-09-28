@@ -28,7 +28,7 @@
                         <!-- 這裡加入會員的個人資訊 -->
                         <p>姓名：${memberbean.name} </p>
                         <p>電子郵件：${memberbean.email}</p>
-                        <a href="#" class="btn btn-primary">編輯個人資料</a>
+                        <a href="memberinfoedit" class="btn btn-primary">編輯個人資料</a>
                     </div>
                 </div>
             </div>
@@ -40,7 +40,31 @@
             </div>
         </div>
     </div>
-
+	<div class="container mt-4">
+    <h1>歷史訂單</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>訂單編號</th>
+                <th>日期</th>
+                <th>總金額</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <c:forEach items="${orderHistory}" var="order">
+                <tr>
+                    <td>${order.oId}</td>
+                    <td>${order.createDate}</td>
+                    <td>${order.totalPrice}</td>
+                    <td>
+                        <a href="orderDetails?orderId=${order.oId}" class="btn btn-primary">查看詳細</a>
+                    </td>
+                </tr>
+            </c:forEach>
+        </tbody>
+    </table>
+</div>
     <!-- 引入 Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
 </body>

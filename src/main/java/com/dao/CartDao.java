@@ -146,7 +146,9 @@ public class CartDao {
 					cdb.setProductId(rs.getInt("product_id"));
 					cdb.setQuantity(rs.getInt("quantity"));
 					cdb.setProductName(rs.getString("p_name"));
-					list.add(cdb);
+					if(cdb.getPrice()!=0) {
+						list.add(cdb);						
+					}
 				}
 				return list;
 			}
@@ -190,5 +192,31 @@ public class CartDao {
 			}
 		});
 	
+	}
+	
+	public Boolean editCartQuantity(int cartId,int pId,int quantity) {
+		String sql ="update cart_detail set quantity=? where cart_id=? and product_id=?";
+		return jdbcTemplate.execute(sql,new PreparedStatementCallback<Boolean>() {
+			@Override
+			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
+				// TODO Auto-generated method stub
+				ps.setInt(1,quantity);
+				ps.setInt(2, cartId);
+				ps.setInt(3,pId);
+				return ps.execute();
+			}
+		});
+	}
+	
+	public Boolean cleanCart(int cartId) {
+		String sql = "delete cart,cart_detail from cart inner join cart_detail on cart.cart_id = cart_detail.cart_id where cart.cart_id=?";
+		return jdbcTemplate.execute(sql,new PreparedStatementCallback<Boolean>() {
+			@Override
+			public Boolean doInPreparedStatement(PreparedStatement ps) throws SQLException, DataAccessException {
+				// TODO Auto-generated method stub
+				ps.setInt(1,cartId);
+				return ps.execute();
+			}
+		});
 	}
 }

@@ -16,6 +16,16 @@ public class MemberBean {
 	private Date birthday;
 	private String email;
 	private String phone;
+	private String address;
+	
+	
+	
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
 	public String getAccount() {
 		return account;
 	}

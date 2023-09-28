@@ -27,6 +27,7 @@
 	<!-- 購物車內容 -->
 	<div class="container mt-4">
 		<h1>購物車</h1>
+		<form action="carteditconfirm">
 		<table class="table">
 			<thead>
 				<tr>
@@ -39,31 +40,21 @@
 			</thead>
 			<tbody>
 				<!-- 商品1 -->
-					<tr>
-						<td>${cartdetailbeans.productName}</td>
-						<td>${cartdetailbeans.price}</td>
-						<td><input type="number" value="${cartdetailbeans.quantity}"></td>
-						<td>${cartdetailbeans.price * cartdetailbeans.quantity}</td>
-						<td>
-							<form action="deleteformcart">
-								<input type="hidden" name="del" value="${cartdetailbeans.productId}">
-								<input type="submit" class="btn btn-danger" value="刪除">
-							</form>
-						</td>
-						<td>
-							<form action="editcart">
-								<input type="hidden" name="edit" value="${cartdetailbeans.productId}">
-								<input type="submit" class="btn btn-primary" value="編輯">
-							</form>
-						</td>
-					</tr>
-
-				<!-- 其他商品 -->
-				<!-- 在此循環顯示購物車中的其他商品 -->
+				<tr>
+					<td>${cartdetailbeans.productName}</td>
+					<td>${cartdetailbeans.price}</td>
+					<td><input type="number" name="editquantity" value="${cartdetailbeans.quantity}"></td>
+					<td>${cartdetailbeans.price * cartdetailbeans.quantity}</td>
+					<td><input type="hidden" name="cartid" value="${cartdetailbeans.cartId}"></td>
+					<td><input type="hidden" name="productid" value="${cartdetailbeans.productId}"></td>
+				</tr>
+				
 			</tbody>
-
 		</table>
 		
+			<input type="submit" class="btn btn-primary btn-lg" name="carteditconfirm" value="確認修改">
+		</form>
+
 	</div>
 
 

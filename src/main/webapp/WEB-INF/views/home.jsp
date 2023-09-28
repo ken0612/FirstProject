@@ -47,10 +47,10 @@
 					<li class="nav-item"><a class="nav-link disabled">Disabled</a>
 					</li>
 				</ul>
-				<form class="d-flex">
-					<input class="form-control me-2" type="search"
+				<form  action ="search" class="d-flex">
+					<input class="form-control me-2" type="search" name="searchbox"
 						placeholder="輸入商品名稱..." aria-label="Search">
-					<button class="btn btn-outline-success" type="submit">Search</button>
+					<input type="submit" class="btn btn-outline-success" value="搜尋">
 				</form>
 				<ul class="navbar-nav ">
 					<%

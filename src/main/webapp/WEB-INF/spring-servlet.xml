@@ -57,4 +57,12 @@
 		<property name="productManageDao" ref="productmanagedao"></property>
 	</bean>
 	
+	<bean id="orderdao" class="com.dao.OrderDao">
+		<property name="jdbcTemplate" ref="jt"></property>
+		<property name="cartDao" ref="cartdao"></property>
+		<property name="productManageDao" ref="productmanagedao"></property>
+		
+	
+	</bean>
+	
 </beans>

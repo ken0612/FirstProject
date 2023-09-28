@@ -1,14 +1,18 @@
 package com.ken;
 
+import java.sql.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,11 +20,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.beans.CartDetailBean;
 import com.beans.MemberBean;
+import com.beans.OrderBean;
+import com.beans.OrderDetailBean;
 import com.beans.ProductBean;
 import com.beans.UserLoginBean;
 import com.dao.CartDao;
 import com.dao.LoginDao;
 import com.dao.MemberBeanDao;
+import com.dao.OrderDao;
 import com.dao.ProductManageDao;
 import com.dao.SignUpDao;
 
@@ -37,6 +44,9 @@ public class MainController {
 	ProductManageDao productManageDao;
 	@Autowired
 	CartDao cartDao;
+	
+	@Autowired
+	OrderDao orderDao;
 	
 	
 	@RequestMapping("/")
@@ -109,6 +119,8 @@ public class MainController {
 		Object memberId= session.getAttribute("loggedInUser");
 		if(memberId != null) {
 			m.addAttribute("memberbean",memberbeandao.getMemberBean((int)session.getAttribute("loggedInUser")));
+			List<OrderBean> orderHistory = orderDao.getHistoryOrders((int)memberId);		
+			m.addAttribute("orderHistory",orderHistory);
 			return "member-page";
 		}
 		return "Loginform";
@@ -203,4 +215,85 @@ public class MainController {
 		return "cart-edit-page";
 	}
 	
+	@RequestMapping(value="carteditconfirm")
+	public String cartEditConfirm(
+			@RequestParam("editquantity") int quantity,
+			@RequestParam("cartid") int cartId,
+			@RequestParam("productid") int productId,
+			HttpSession session) {
+		cartDao.editCartQuantity(cartId, productId, quantity);
+		return "redirect:cart";
+	}
+	
+	@RequestMapping(value="orderconfirm")
+	public String orderConfirm(HttpSession session,Model m) {
+		int uid =(int)session.getAttribute("loggedInUser");
+		int totalPrice=cartDao.getTotalPrice(cartDao.getCartId(uid));
+		MemberBean user =memberbeandao.getMemberBean(uid);
+		List<CartDetailBean> list= cartDao.getCartDetailByUid(uid);
+		if(list.size()==0) {
+			m.addAttribute("errormsg","購物車是空的！");
+			m.addAttribute("totalPrice",totalPrice);
+			return "cart";
+		}
+		m.addAttribute("totalPrice",totalPrice);
+		m.addAttribute("cartdetailbeans",list);
+		m.addAttribute("userbean",user);
+		return "order-confirm";
+	}
+	
+	
+	@RequestMapping(value="memberinfoedit")
+	public String memberInfoEdit(HttpSession session,Model m) {
+		int uid = (int)session.getAttribute("loggedInUser");
+		MemberBean mb= memberbeandao.getMemberBean(uid);
+		m.addAttribute("user",mb);
+		return "member-edit-page";
+	}
+	
+	@RequestMapping(value="membereditconfirm")
+	public String memberEditConfirm(
+			@RequestParam("name") String name,
+			@RequestParam("birthday") Date birthDay,
+			@RequestParam("email") String email,
+			@RequestParam("phone") String phone,
+			@RequestParam("address") String address,HttpSession session
+			) {
+		System.out.println(birthDay);
+		int uid= (int)session.getAttribute("loggedInUser");
+		memberbeandao.editMemberInfo(name, birthDay, email, phone, address, uid);
+		return "redirect:memberpage";
+	}
+	
+	
+	@RequestMapping(value="submitorder")
+	public String submitOrder(HttpSession session) {
+		int uid =(int)session.getAttribute("loggedInUser");
+		orderDao.orderSubmit(uid);
+		return "cart";
+	}
+	
+	@GetMapping(value="/orderDetails")
+	public String getOrderDetails(@RequestParam("orderId") int orderId,Model m) {
+		List<OrderDetailBean> list = orderDao.getOderDetail(orderId);
+		m.addAttribute("orderDetail",list);
+		return "history-order-detail";
+		
+	}
+	
+	@RequestMapping(value="search")
+	public String searchProduct(@RequestParam("searchbox") String search,Model m,HttpServletRequest req) {
+		List<ProductBean> productList=productManageDao.getAllProductBeans();
+		if(search.length()==0) {
+			return "redirect:/";
+		}else {
+			List<ProductBean> targetList =productManageDao.searchProdcut(productList, search);
+			int count =targetList.size();
+			
+			req.setAttribute("searchCount", count);
+			m.addAttribute("productList",targetList);
+		}
+		
+		return "product";
+	}
 }
